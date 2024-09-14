@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using ProjectClock.BusinessLogic.Dtos.WorkingTime.WorkingTimeDtos
+
+@model IEnumerable<WorkingTimeDto>
+@inject IViewLocalizer Localizer
+
+@if (Model.Any())
+{
+    <div class="row col-lg col-12 text-bg-info bg-opacity-50 rounded-2 p-1 m-1 box-shadow">
+        <div class="container">
+            <h2 class="text-center">@Localizer["ProjectInProgress"]</h2>
+            <div class="row justify-content-center ">
+                <div class="row-md-4">
+                    <form action="/WorkingTime/Stop" method="post">
+                        <div class="row mb-1">
+                            <div class="col-md-8">
+                                <label for="WorkingTimeId" class="control-label">@Localizer["Project"]</label>
+                                <select id="WorkingTimeDropdown" name="WorkingTimeId" class="form-select form-select-lg">
+                                    @foreach (var workingTime in Model)
+                                    {
+                                        <option value="@workingTime.Id">@workingTime.ProjectName</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mt-1 d-none d-md-block" id="stopwatch"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3 d-none d-md-block">
+                                <label for="Description">@Localizer["Description"]</label>
+                                <input type="text" class="form-control" id="Description" name="Description">
+                            </div>
+
+                        </div>
+                        <div class=" row mb-3">
+                            <input value="@Localizer["Stop"]" type="submit" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<script>
+    function updateStopwatch() {
+        var selectedValue = parseInt($('#WorkingTimeDropdown').val(), 10);
+
+        $.get('@Url.Action("GetTime", "WorkingTime")',{ selectedProjectId: selectedValue }, function (data) {
+            $('#stopwatch').text(data);
+        });
+    }
+
+    $(document).ready(function () {
+        setInterval(updateStopwatch, 1000);
+
+        $('#WorkingTimeDropdown').change(function () {
+            updateStopwatch();  
+        });
+    });
+</script>

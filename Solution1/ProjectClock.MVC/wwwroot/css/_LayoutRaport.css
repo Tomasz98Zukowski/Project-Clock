@@ -1,0 +1,580 @@
+﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+
+html {
+    position: relative;
+    min-height: 100%;
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.Okno {
+    position: absolute;
+    top: 500px;
+    left: 500px;
+}
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+
+.bg-image {
+    background-image: url('../img/bg.jpg');
+    filter: blur(10px) grayscale(100%);
+    -webkit-filter: blur(10px) grayscale(100%);
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /*background-color:antiquewhite;*/
+    opacity: 0.5;
+    position: absolute;
+  
+}
+
+
+
+
+
+body {
+    /*margin-bottom: 120px;*/
+    /*    
+    background-blend-mode: multiply;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;*/
+    background-color: rgb(255, 0, 1,0);
+   /* height: 100%;*/
+}
+
+
+.window {
+    /*background-image: url('../img/bg.jpg');*/
+    /* The image used */
+    /* Add the blur effect */
+    /* filter: blur(10px);
+    -webkit-filter: blur(10px);*/
+    /* Full height */
+    /* Center and scale the image nicely */
+    /*background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;*/
+
+    height: 100%;
+    width: 100%;
+    background-color: dimgray;
+    position: absolute;
+    /*top: 0px;*/ /* Header Height */
+    /*bottom: 0px;*/ /* Footer Height */
+
+
+
+
+
+    
+}
+
+
+.col-5 {
+    /*position: absolute;
+    top: 100px;*/ /* Header Height */
+    /*bottom: 0px;*/ /* Footer Height */
+    /*left: 200px;
+    width: 30%;
+    background-color:aqua;*/
+}
+
+.raportforuser {
+   /* background-color: blueviolet;*/
+    position: absolute;
+    bottom: 10px;
+    left: 400px;
+    width: 400px;
+    height: 50px;
+}
+
+.container {
+    /* margin: auto;*/
+    /*position:absolute;*/
+    height: 800px;
+    width: 1400px;
+    background-color: rgba(80,90,90,0.5);
+    opacity: 0.9;
+    border-radius: 20px;
+    /* background-color:;*/
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /*right: 50%;*/
+    margin: -400px 0% 0% -650px;
+    /* width: 0vw;
+    height: 0vh;*/
+    box-shadow: 0 0 1000px 1px rgba(90,255,255,0.2);
+    /*padding: 400px 300px;*/
+    /*display: flex;
+    justify-content: center;*/
+    /*margin: auto;*/
+    border: 4px solid darkcyan;
+}
+
+
+/* Button Back */
+
+.btnBack {
+    height: 60px;
+    width: 150px;
+    background-color: #04AA6D; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    /*margin: 4px 2px;*/
+    transition-duration: 0.4s;
+    cursor: pointer;
+    /*padding: 13px 37px;*/
+    /*margin-left: 121px;
+    margin-top: 500px;*/
+    box-shadow: 0 0 5px 2px rgba(255,255,255,0.5);
+    position: absolute;
+    bottom: 30px;
+    left: 35px;
+}
+
+
+.btnBack {
+    background-color: rgba(50,80,80,0.5);
+    color: lightseagreen;
+    /*border: 2px solid #04AA6D;*/
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+
+.btnBack:hover {
+        background-color: skyblue;
+        color: white;
+}
+
+
+
+/* Button Genarate */
+
+
+
+
+.btnMore {
+    height: 60px;
+    width: 150px;
+    background-color: #04AA6D; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    /*margin: 4px 2px;*/
+    transition-duration: 0.4s;
+    cursor: pointer;
+    /* padding: 13px 37px;*/
+    /*margin-left: 121px;
+    margin-top: 500px;*/
+    box-shadow: 0 0 5px 2px rgba(255,255,255,0.5);
+    position: absolute;
+    bottom: 30px;
+    right: 35px;
+}
+
+
+.btnMore {
+    background-color: rgba(50,80,80,0.5);
+    color:lightseagreen;
+    /*border: 2px solid #04AA6D;*/
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+
+.btnMore:hover {
+    background-color: skyblue;
+    color: white;
+ }
+
+
+.title {
+    /*background-color: skyblue;*/
+    /* font-family: Arial, Helvetica, sans-serif;*/
+    border-radius: 10px;
+    opacity: 0.7;
+    position: absolute;
+    height: 50px;
+    width: 1200px;
+    left: -310px;
+    font-weight: 600;
+    text-align: center;
+    /*margin-left: auto;
+    margin-right: auto;*/
+    color: rgba(0,150,150,1);
+
+    margin-top: 60px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-shadow: 0px 0px 10px rgba(0,0,0,1);
+    font-size: 45px;
+}
+
+.TimeOfPreriod {
+    margin: auto;
+    /*background-color:aqua;*/
+    padding: 0px 0px;
+    /* position: fixed;
+    top: 20%;  Header Height 
+    left: 30%;*/
+}
+
+
+/* Picker start */
+
+.form-group {
+    position: absolute;
+    top:10%;
+    left: 5%;
+    
+}
+
+
+
+
+
+.myStyle {
+    /* margin: auto;*/
+    /*position:absolute;*/
+    /*height: 800px;
+    width: 1400px;*/
+    /*background-color: sandybrown;*/
+    /* opacity: 0.8;
+    border-radius: 20px;*/
+    /* background-color:;*/
+    /*position: absolute;
+    top: 50%;
+    left: 50%;*/
+    /*right: 50%;*/
+    /*margin: -400px 0% 0% -650px;*/
+    /* width: 0vw;
+    height: 0vh;*/
+    /*box-shadow: 0 0 20px 2px white;*/
+    /*padding: 400px 300px;*/
+    /*display: flex;
+    justify-content: center;*/
+    /*margin: auto;*/
+
+    animation-name: example;
+    animation-duration: 1s;
+    animation-iteration-count: 2;
+    animation-direction: alternate;
+}
+
+
+  @keyframes example {
+    from {
+        filter: blur(10px) grayscale(100%);
+        -webkit-filter: blur(10px) grayscale(100%);
+    }
+
+    to {
+        filter: blur(0px) grayscale(0%);
+        -webkit-filter: blur(0px) grayscale(0%);
+    }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+/*button generate*/
+
+
+#generate {
+    height: 40px;
+    width: 100px;
+    background-color: darkcyan; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 10px;
+    /*margin: 4px 2px;*/
+    transition-duration: 0.4s;
+    cursor: pointer;
+    /* padding: 13px 37px;*/
+    /*margin-left: 121px;
+    margin-top: 500px;*/
+    box-shadow: 0 0 0px 0px rgba(255,255,255,0.5);
+    position: relative;
+    top: -56px;
+    left: 275px;
+}
+
+
+/*#generate {
+    background-color: darkcyan;
+    color: white;*/
+    /*border: 2px solid #04AA6D;*/
+    /*border: none;
+    border-radius: 10px;
+    font-size: 20px;
+}*/
+
+
+#generate:hover {
+    background-color: skyblue;
+    color: white;
+}
+
+#selectedUser {
+    height: 40px;
+    width: 250px;
+    position: relative;
+    bottom: 0px;
+    right: 0px;
+}
+
+
+
+#sau_div_con {
+    /* margin: auto;*/
+    /*position:absolute;*/
+    height: 100px;
+    width: 200px;
+    /*border:10px;
+    background-color:aquamarine;*/
+    /* opacity: 0.8;*/
+    /*border-radius: 20px;*/
+    /* background-color:;*/
+    position: absolute;
+    top: 250px;
+    left: 100px;
+    /*right: 50%;*/
+    /* margin: -400px 0% 0% -650px;*/
+    /* width: 0vw;
+    height: 0vh;*/
+    /*box-shadow: 0 0 20px 2px white;*/
+    /*padding: 400px 300px;*/
+    /*display: flex;
+    justify-content: center;*/
+    /*margin: auto;*/
+}
+
+#sap_div_con {
+    /* margin: auto;*/
+    /*position:absolute;*/
+    height: 100px;
+    width: 200px;
+    /*border:10px;
+    background-color:aquamarine;*/
+    /* opacity: 0.8;*/
+    /*border-radius: 20px;*/
+    /* background-color:;*/
+    position: absolute;
+    top: 380px;
+    left: 130px;
+    /*right: 50%;*/
+    /* margin: -400px 0% 0% -650px;*/
+    /* width: 0vw;
+    height: 0vh;*/
+    /*box-shadow: 0 0 20px 2px white;*/
+    /*padding: 400px 300px;*/
+    /*display: flex;
+    justify-content: center;*/
+    /*margin: auto;*/
+}
+
+
+#selectProject {
+    height: 40px;
+    width: 200px;
+    position: relative;
+    bottom: 0px;
+    right: 0px;
+}
+
+
+
+
+
+#text_1 {
+    font-size: 18px;
+    position: absolute;
+    top: 40px;
+    left: 50px;
+    color: rgba(0,255,255,1);
+}
+
+
+
+#text_2 {
+    font-size: 18px;
+    position: absolute;
+    top: 40px;
+    left: 400px;
+    color: rgba(0,255,255,1);
+}
+
+
+
+
+
+
+#text_box_con_1 {
+    position: absolute;
+    top: 70px;
+    right: 80px;
+    /* margin: auto;*/
+    /*position:absolute;*/
+    /*height: 400px;
+    width: 600px;*/
+    height: 0px;
+    width: 0px;
+    opacity: 0;
+    /*border: 10px;*/
+    background-color: rgba(80,90,90,1);
+    /* opacity: 0.8;*/
+    border-radius: 20px;
+    /* background-color:;*/
+    border: 3px solid darkcyan;
+    box-shadow: 0 0 20px 10px inset rgba(0,0,0,0.4);
+    /*font-weight: 0;
+    text-align: left;*/
+    /*margin-left: auto;
+    margin-right: auto;*/
+    /*margin-top: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;*/
+    /*right: 50%;*/
+    /* margin: -400px 0% 0% -650px;*/
+    /* width: 0vw;
+    height: 0vh;*/
+    /*box-shadow: 0 0 20px 2px white;*/
+    /*padding: 400px 300px;*/
+    /*display: flex;
+    justify-content: center;*/
+    /*margin: auto;*/
+    /* margin: auto;*/
+    /*position:absolute;*/
+    /*height: 800px;
+    width: 1400px;*/
+    /*background-color: sandybrown;*/
+    /* opacity: 0.8;
+    border-radius: 20px;*/
+    /* background-color:;*/
+    /*position: absolute;
+    top: 50%;
+    left: 50%;*/
+    /*right: 50%;*/
+    /*margin: -400px 0% 0% -650px;*/
+    /* width: 0vw;
+    height: 0vh;*/
+    /*box-shadow: 0 0 20px 2px white;*/
+    /*padding: 400px 300px;*/
+    /*display: flex;
+    justify-content: center;*/
+    /*margin: auto;*/
+    /*  animation-name: example1;
+    animation-duration: 1s;
+    animation-iteration-count: 2;
+    animation-direction: alternate;*/
+}
+
+
+
+.Projworkedon {
+
+}
+
+
+
+
+.Mystyle4 {
+    /* position: absolute;
+    top: 200px;
+    left: 300px;
+    height: 300px;
+    width: 300px;
+    border: 10px;
+    background-color: rgba(90,90,90,1);
+    border-radius: 20px;
+    border: 3px solid darkcyan;*/
+  opacity:0;
+}
+
+
+
+
+
+.Mystyle3 {
+   /* position: absolute;
+    top: 200px;
+    left: 300px;
+    height: 300px;
+    width: 300px;
+    border: 10px;
+    background-color: rgba(90,90,90,1);
+    border-radius: 20px;
+    border: 3px solid darkcyan;*/
+    animation-name: example1;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards
+}
+
+
+@keyframes example1 {
+    from {
+        height: 0px;
+        width: 650px;
+        opacity:0;
+    }
+
+    to {
+        height: 550px;
+        width: 650px;
+        opacity: 1;
+    }
+}
+
+
+
+
+
+
+
+
+#Chart-cont {
+    position: absolute;
+    top: 150px;
+    left: 140px;
+    height: 500px;
+    width: 1200px;
+}

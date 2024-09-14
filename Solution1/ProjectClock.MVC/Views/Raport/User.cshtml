@@ -1,0 +1,435 @@
+﻿@using ProjectClock.BusinessLogic.Dtos.Raport;
+@using ProjectClock.BusinessLogic.Dtos.WorkingTime.WorkingTimeDtos;
+@using ProjectClock.Database.Entities;
+
+
+
+
+
+@model Model
+
+
+@{
+
+	var labels = new List<string>() { "Placeholder1Project", "Placeholder2Project", "Placeholder3Project", "Placeholder4Project" };
+	var data = new List<int>() { 20, 25, 10, 4 };
+
+	var successMessage = TempData["SuccessMessage"] as string;
+	var errorMessage = TempData["ErrorMessage"] as string;
+
+	Layout = "~/Views/Shared/Components/Raport/_LayoutRaport.cshtml";
+
+	var list = Model;
+}
+
+
+
+
+@* ========================================================    Start    ======================================================== *@
+
+
+<div class="bg-image" id="MyDiv"></div>
+<div class="container">
+
+	<div class="title">RAPORT FOR USER</div>
+
+	<button class="btnMore" id="btnchart" onclick="location.href='@Url.Action("ChartOfUser", "Raport")'">Chart</button>
+	<button class="btnBack" onclick="location.href='@Url.Action("Index", "Home")'">Back</button>
+
+	@* <div class="form-group">
+	</div> *@
+	@* ========================================================    Choose user    ======================================================== *@
+
+
+	<div class="Select_a_user" id="sau_div_con">
+		<div class="Generate Report for:">Choose user :</div>
+		<form asp-controller="Raport" asp-action="User" method="post">
+			<div class="mb-2">
+				<label for="selectedOrganization"></label>
+				<select class="form-select form-select-sm" aria-label="Small select example" id="selectedUser" name="userId">
+					@{
+						foreach (var user in list.ListUsersForRaports)
+						{
+											<option value="@user.Id">@user.Name @user.Surname</option>
+						}
+					}
+				</select>
+			</div>
+			<button type="submit" id="generate" onclick="Function_user_btn()">OK</button>
+		</form>
+	</div>
+
+
+	@* ========================================================    Choose project    ======================================================== *@
+
+@* 
+		<div class="Select_a_pro" id="sap_div_con">
+	<div class="Generate Report for:">Choose project :</div>
+	<form asp-controller="Raport" asp-action="ChooseProjectName" method="post">
+	<div class="mb-2">
+	<label for="selectedOrganization"></label>
+	<select class="form-select form-select-sm" aria-label="Small select example" id="selectProject" name="ProjectId">
+	@{
+	foreach (var project in list.projectsAfterUserId)
+	{
+	<option value="@project.Id">@project.Name</option>
+
+	}
+	}
+	</select>
+	</div>
+	<button type="submit" id="generate">OK</button>
+	</form>
+	</div> *@
+	
+
+
+	@* ========================================================    Text window 1    ======================================================== *@
+
+
+	<div class="Projworkedon" id="text_box_con_1">
+		<div id="text_1">
+			<p style="text-indent:30px;">All projects you were woking on:</p>
+
+
+			============================================
+			<br />
+			<br />
+			@foreach (var item in list.projectsAfterUserId)
+			{
+				@* <p>&nbsp&nbsp&nbsp&nbsp&nbsp @item.Name @item.Id</p> *@
+				<p style="text-indent:40px;">@item.Name</p>
+
+			}
+
+			@if (list.projectsAfterUserId.Count == 0)
+			{
+
+				@* <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspYou have't projects to raport  </p> *@
+
+				<p style="text-indent:40px;">You have't projects to raport  </p>
+
+			}
+
+		</div>
+
+		<div id="text_2">
+			<p style="text-indent:10px;">Total time:</p>
+			<br />
+			<br />
+
+			@foreach (var item in list.totalTime_sum)
+			{
+				<p style="text-indent:20px;"> @string.Format("{0:00}:{1:00}:{2:00}", item.Value.Hours, item.Value.Minutes, item.Value.Seconds)</p>
+
+			}
+
+			@if (list.totalTime_1.Count == 0)
+			{
+
+				<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp - </p>
+
+			}
+
+		</div>
+
+
+
+
+	</div>
+
+
+
+	
+
+
+
+
+
+
+
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+	<script type="text/javascript">
+
+
+		$(window).on('load', myFunction_2())
+
+
+		function myFunction_2() {
+
+
+			//	var element = document.getElementById("MyDiv");
+			//	element.classList.toggle("myStyle");
+
+
+			var element = document.getElementById("MyDiv");
+			element.classList.toggle("myStyle");
+
+
+			//myVar = setTimeout(myFunction, 2000)
+
+			myFunction_1()
+
+			//alert("I am an alert box!");
+
+		}
+
+
+
+
+
+
+
+
+
+		function myFunction_1() {
+
+			//var element = document.getElementById("MyDiv");
+			//element.classList.toggle("myStyle");
+
+			var element = document.getElementById("text_box_con_1");
+			element.classList.toggle("Mystyle3");
+
+
+			//alert("I am an alert box!");
+
+
+		}
+
+
+		
+		
+
+
+
+
+
+
+
+
+	</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	@* @{
+	if (Model.workingTimes is null)
+	{
+	<h1 class="fw-bold mb-4 text-center">Times null</h1>
+	}
+	else
+	{
+	<h1 class="fw-bold mb-4 text-center">Times not null @Model.workingTimes</h1>
+	}
+	} *@
+
+
+
+
+
+	@*   // var list_2 = Model.List;
+	// var list_3 = Model; *@
+
+
+
+
+	@* @model StartStopWorkingTimeDto *@
+
+	@* @model List<WorkingTime> *@
+
+
+
+
+
+	@* <label asp-for="BirthDate" class="control-label"></label> *@
+	@* <input asp-for="BirthDate" class="form-control" />
+	<span asp-validation-for="BirthDate" class="text-danger"></span> *@
+
+
+	@*  <div class="input-group input-daterange">
+	<input asp-for="StartData" class="form-control" value="2012-04-05">
+	<div class="input-group-addon">to</div>
+	<input asp-for="StopData" class="form-control" value="2012-04-19">
+	</div> *@
+
+
+
+
+
+
+
+
+
+
+
+
+
+	@*
+	@using (Html.BeginForm("User", "Raport", FormMethod.Post))
+	{
+	<div class="Okno">
+
+	<label for="organizationName" class="form-label">Create new organization</label>
+
+	<input type="text" name="Description" class="form-control form-control-sm" id="Description" placeholder="Type name here">
+	<br />
+	<button type="submit" class="btn btn-primary btn-sm d-block mx-auto">Create</button>
+
+	</div>
+
+
+	} *@
+
+
+	@* <div class="col-7">
+	<canvas id="myPieChart" width="400" height="400"></canvas>
+	</div> *@
+
+
+
+</div>
+
+
+
+
+
+@* @if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success" role="alert">
+        @successMessage
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+ *@
+
+
+
+
+
+
+
+@*    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="First name" aria-label="First name">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+                        </div>
+                    </div>
+ *@
+
+
+
+
+
+
+@*  <label class="form-label m-2">Select the user</label>
+                    <select class="form-select" aria-label="Default select example">
+                        @foreach (var item in list)
+                        {
+                            <option value="1">@item.Name @item.Surname @item.Id</option>
+                        }
+                    </select> *@
+
+
+
+@*   <div class="TimeOfPreriod">
+                    <label class="form-label m-2">Time:</label>
+                    <select class="form-select" aria-label="Default select example">
+                        <option value="1">This month</option>
+                        <option value="2">This week</option>
+                        <option value="3">This year</option>
+                        <option value="4">Last month</option>
+                        <option value="5">Last week</option>
+                        <option value="6">Last year</option>
+                        <option value="7">All the time</option>
+                    </select>
+                    </div> *@
+
+
+
+
+
+
+
+
+
+
+@*  <li>
+                    <h3>Okres czasu</h3>
+                    <table class="table-info">
+                        <thead>
+                            <tr>
+                                <th scope="col">Project</th>
+                                <th scope="col">Total Time</th>
+                                <th scope="col">Total Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in list)
+                            {
+                                <tr>
+                                    <td>Project A</td>
+                                    <td>20 hours</td>
+                                    <td>$500</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </li> *@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,229 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using ProjectClock.BusinessLogic.Services.ExcelRaportServices
+@model GenerateDataDto;
+
+@inject IViewLocalizer Localizer
+
+<div class="container">
+    <div class="sticky-top justify-content-center m-2">
+        <div class="row d-none d-md-block">
+            <div class="col-md-12">
+                <div class="btn-group m-2" >
+                    <button type="button" class="btn btn-primary" onclick="setDateRange('this_week')">@Localizer["TWeek"]</button>
+                    <button type="button" class="btn btn-primary" onclick="setDateRange('this_month')">@Localizer["TMonth"]</button>
+                    <button type="button" class="btn btn-primary" onclick="setDateRange('this_year')">@Localizer["TYear"]</button>
+                    <button type="button" class="btn btn-primary" onclick="setDateRange('last_week')">@Localizer["LWeek"]</button>
+                    <button type="button" class="btn btn-primary" onclick="setDateRange('last_month')">@Localizer["LMonth"]</button>
+                    <button type="button" class="btn btn-primary" onclick="setDateRange('last_year')">@Localizer["LYear"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card m-2">
+        <div class="card-body">
+            <h5 class="card-title text-center">@Localizer["GenerateRaportUser"]</h5>
+            <form asp-controller="Excel" asp-action="GenerateUserExcel" method="post">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="form-group m-1  col-sm-5">
+                            <label asp-for="fromDate">@Localizer["From"]</label>
+                    <input asp-for="fromDate" type="date" class="form-control" />
+                    <span asp-validation-for="fromDate" class="text-danger"></span>
+                </div>
+                        <div class="form-group m-1  col-sm-5">
+                            <label asp-for="toDate">@Localizer["To"]</label>
+                    <input asp-for="toDate" type="date" class="form-control" />
+                    <span asp-validation-for="toDate" class="text-danger"></span>
+                        </div>
+                </div>
+                    <button type="submit" class="btn btn-primary m-1">@Localizer["GenerateRaportButton"]</button>
+            </form>
+        </div>
+    </div>
+</div>
+    <div class="card m-2">
+        <div class="card-body">
+        <h5 class="card-title text-center">@Localizer["GenerateRaportProject"]</h5>
+            <form asp-controller="Excel" asp-action="GenerateProjectExcel" method="post">
+                <div class="container-fluid">
+                <div class="form-group m-1">
+                    <label asp-for="projectId">@Localizer["Project"]</label>
+                    <select asp-for="projectId" class="form-select form-select-lg">
+                        @foreach (var project in Model.projects)
+                        {
+                            <option value="@project.Id">@project.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="projectId" class="text-danger"></span>
+                </div>
+                    <div class="row">
+                        <div class="form-group m-1 col-sm-5">
+                        <label asp-for="fromDate">@Localizer["From"]</label>
+                            <input asp-for="fromDate" type="date" class="form-control" />
+                            <span asp-validation-for="fromDate" class="text-danger"></span>
+                        </div>
+                    <div class="form-group m-1  col-sm-5">
+                        <label asp-for="toDate">@Localizer["To"]</label>
+                            <input asp-for="toDate" type="date" class="form-control" />
+                            <span asp-validation-for="toDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                <button type="submit" class="btn btn-primary m-1">@Localizer["GenerateRaportButton"]</button>
+
+                </div>
+                
+            </form>
+        </div>
+    </div>
+    <div class="card m-2">
+        <div class="card-body">
+        <h5 class="card-title text-center">@Localizer["GenerateRaportOrganization"]</h5>
+            <form asp-controller="Excel" asp-action="GenerateOrganizationExcel" method="post">
+                <div class="container-fluid">
+            
+                <div class="form-group m-1">
+                    <label asp-for="organizationId">@Localizer["Organization"]</label>
+                    <select asp-for="organizationId" class="form-select form-select-lg">
+                        @foreach (var organization in Model.organizations)
+                        {
+                            <option value="@organization.OrganizationId">@organization.OrganizationName</option>
+                        }
+                    </select>
+                    <span asp-validation-for="organizationId" class="text-danger"></span>
+                </div>
+                    <div class="row">
+                    <div class="form-group m-1  col-sm-5">
+                        <label asp-for="fromDate">@Localizer["From"]</label>
+                    <input asp-for="fromDate" type="date" class="form-control" />
+                    <span asp-validation-for="fromDate" class="text-danger"></span>
+                </div>
+                    <div class="form-group m-1  col-sm-5">
+                        <label asp-for="toDate">@Localizer["To"]</label>
+                    <input asp-for="toDate" type="date" class="form-control" />
+                    <span asp-validation-for="toDate" class="text-danger"></span>
+                </div>
+                    </div>
+                
+                <button type="submit" class="btn btn-primary m-1">@Localizer["GenerateRaportButton"]</button>
+    </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script>
+    function setDateRange(range) {
+        var fromDateInputs = document.querySelectorAll('input[name="fromDate"]');
+        var toDateInputs = document.querySelectorAll('input[name="toDate"]');
+        var today = new Date();
+        var dayOfWeek = today.getDay();
+        var diff = today.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+        var monday = getPreviousMonday();
+
+        switch (range) {
+            case 'this_week':
+                fromDateInputs.forEach(function (input) {
+                    input.value = formatDate(monday);
+                });
+                toDateInputs.forEach(function (input) {
+                    input.value = formatDate(new Date());
+                });
+                break;
+            case 'this_month':
+                var firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+                var lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                fromDateInputs.forEach(function (input) {
+                    input.value = formatDate(firstDayOfMonth);
+                });
+                toDateInputs.forEach(function (input) {
+                    input.value = formatDate(lastDayOfMonth);
+                });
+                break;
+            case 'last_month':
+                var firstDayOfLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                var lastDayOfLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+                fromDateInputs.forEach(function (input) {
+                    input.value = formatDate(firstDayOfLastMonth);
+                });
+                toDateInputs.forEach(function (input) {
+                    input.value = formatDate(lastDayOfLastMonth);
+                });
+                break;
+            case 'last_week':
+                var lastMonday = getMondayBeforeLast();
+                var lastSunday = getLastSunday();
+                fromDateInputs.forEach(function (input) {
+                    input.value = formatDate(lastMonday);
+                });
+                toDateInputs.forEach(function (input) {
+                    input.value = formatDate(lastSunday);
+                });
+                break;
+            case 'this_year':
+                var firstDayOfYear = new Date(today.getFullYear(), 0, 1);
+                var lastDayOfYear = new Date(today.getFullYear(), 11, 31);
+                fromDateInputs.forEach(function (input) {
+                    input.value = formatDate(firstDayOfYear);
+                });
+                toDateInputs.forEach(function (input) {
+                    input.value = formatDate(lastDayOfYear);
+                });
+                break;
+            case 'last_year':
+                var firstDayOfLastYear = new Date(today.getFullYear() - 1, 0, 1);
+                var lastDayOfLastYear = new Date(today.getFullYear() - 1, 11, 31);
+                fromDateInputs.forEach(function (input) {
+                    input.value = formatDate(firstDayOfLastYear);
+                });
+                toDateInputs.forEach(function (input) {
+                    input.value = formatDate(lastDayOfLastYear);
+                });
+                break;
+            default:
+                break;
+        }
+    }
+
+    function formatDate(date) {
+        var yyyy = date.getFullYear();
+        var mm = String(date.getMonth() + 1).padStart(2, '0');
+        var dd = String(date.getDate()).padStart(2, '0');
+        return yyyy + '-' + mm + '-' + dd;
+    }
+
+    function getPreviousMonday() {
+        var today = new Date();
+        var dayOfWeek = today.getDay();
+
+        var daysSincePreviousMonday = (dayOfWeek - 1 + 7) % 7;
+
+        var daysToSubtract = daysSincePreviousMonday === 0 ? 7 : daysSincePreviousMonday;
+
+        today.setDate(today.getDate() - daysToSubtract);
+
+        return today;
+    }
+
+    function getMondayBeforeLast() {
+        var previousMonday = getPreviousMonday();
+        var dayOfWeek = previousMonday.getDay();
+
+        previousMonday.setDate(previousMonday.getDate() - 7);
+
+        return previousMonday;
+    }
+
+    function getLastSunday() {
+        var today = new Date();
+        var dayOfWeek = today.getDay();
+
+        var daysToSubtract = dayOfWeek;
+
+        var lastSunday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - daysToSubtract);
+
+        return lastSunday;
+    }
+</script>

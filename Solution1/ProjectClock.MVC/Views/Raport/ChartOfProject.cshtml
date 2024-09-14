@@ -1,0 +1,456 @@
+﻿@using ProjectClock.BusinessLogic.Dtos.Raport;
+@using ProjectClock.BusinessLogic.Dtos.WorkingTime.WorkingTimeDtos;
+@using ProjectClock.Database.Entities;
+
+
+
+
+
+@model Model
+
+
+@{
+
+	//var labels = new List<string>() { "Placeholder1Project", "Placeholder2Project", "Placeholder3Project", "Placeholder4Project", "Placeholder4Project", "Placeholder4Project", "Placeholder4Project", "Placeholder4Project", "Placeholder4Project" };
+	//var data = new List<string>() { "20", "25", "10", "4", "34", "100", "4", "34", "100" };
+	//var data = new List<int>() { 20, 25, 10, 4, 34, 100, 4, 34, 100 };
+
+
+	var labels = Model.projectsAfterUserId.Select(a => a.Name).ToList();
+
+	var data = Model.totalTime_sum.Select(a => a.Value.Seconds).ToList(); ;
+
+
+
+
+	Layout = "~/Views/Shared/Components/Raport/_LayoutRaport.cshtml";
+
+	var list = Model;
+}
+
+
+
+
+@* ========================================================    Start    ======================================================== *@
+
+
+<div class="bg-image" id="MyDiv"></div>
+<div class="container">
+
+	<div class="title">RAPORT FOR PROJECT</div>
+
+
+	<button class="btnBack" onclick="location.href='@Url.Action("Project", "Raport")'">Back</button>
+
+
+	<div class="col-7" id="Chart-cont">
+
+		<canvas id="myPieChart" width="400" height="200"></canvas>
+
+	</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script type="text/javascript">
+
+
+	var ctx = document.getElementById('myPieChart').getContext('2d');
+
+	var myBarChart = new Chart(ctx, {
+
+		type: 'bar',  // Change to 'bar' for a bar chart
+
+
+		data: {
+
+			labels: @Html.Raw(Json.Serialize(labels)),
+
+			datasets: [{
+
+				data: @Html.Raw(Json.Serialize(data)),
+				backgroundColor: [
+					'rgba(255, 99, 132, 0.5)',
+					'rgba(255, 159, 64, 0.5)',
+					'rgba(255, 205, 86, 0.5)',
+					'rgba(75, 192, 192, 0.5)',
+					'rgba(54, 162, 235, 0.5)',
+					'rgba(153, 102, 255, 0.5)',
+					'rgba(201, 203, 207, 0.5)'
+				],
+				borderColor: [
+					'rgb(255, 99, 132)',
+					'rgb(255, 159, 64)',
+					'rgb(255, 205, 86)',
+					'rgb(75, 192, 192)',
+					'rgb(54, 162, 235)',
+					'rgb(153, 102, 255)',
+					'rgb(201, 203, 207)'
+				],
+				borderWidth: 1
+			}]
+		},
+
+		options: {
+			plugins: {
+				legend: {
+					display: false
+				},
+			},
+			responsive: true,
+			scales: {
+				y: {
+					ticks: { color: 'rgb(201, 203, 207, 0)', beginAtZero: true }
+				},
+				x: {
+					ticks: { color: 'white', beginAtZero: true }
+				}
+			}
+		}
+
+
+
+
+
+	});
+
+
+
+
+	$(window).on('load', myFunction_2())
+
+
+	function myFunction_2() {
+
+
+		//	var element = document.getElementById("MyDiv");
+		//	element.classList.toggle("myStyle");
+
+
+		var element = document.getElementById("MyDiv");
+		element.classList.toggle("myStyle");
+
+
+		//myVar = setTimeout(myFunction, 2000)
+
+		myFunction_1()
+
+		//alert("I am an alert box!");
+
+	}
+
+
+
+
+
+
+
+
+
+	function myFunction_1() {
+
+		//var element = document.getElementById("MyDiv");
+		//element.classList.toggle("myStyle");
+
+		var element = document.getElementById("text_box_con_1");
+		element.classList.toggle("Mystyle3");
+
+
+		//alert("I am an alert box!");
+
+
+	}
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @{
+	if (Model.workingTimes is null)
+	{
+	<h1 class="fw-bold mb-4 text-center">Times null</h1>
+	}
+	else
+	{
+	<h1 class="fw-bold mb-4 text-center">Times not null @Model.workingTimes</h1>
+	}
+	} *@
+
+
+
+
+
+@*   // var list_2 = Model.List;
+	// var list_3 = Model; *@
+
+
+
+
+@* @model StartStopWorkingTimeDto *@
+
+@* @model List<WorkingTime> *@
+
+
+
+
+
+@* <label asp-for="BirthDate" class="control-label"></label> *@
+@* <input asp-for="BirthDate" class="form-control" />
+	<span asp-validation-for="BirthDate" class="text-danger"></span> *@
+
+
+@*  <div class="input-group input-daterange">
+	<input asp-for="StartData" class="form-control" value="2012-04-05">
+	<div class="input-group-addon">to</div>
+	<input asp-for="StopData" class="form-control" value="2012-04-19">
+	</div> *@
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*
+	@using (Html.BeginForm("User", "Raport", FormMethod.Post))
+	{
+	<div class="Okno">
+
+	<label for="organizationName" class="form-label">Create new organization</label>
+
+	<input type="text" name="Description" class="form-control form-control-sm" id="Description" placeholder="Type name here">
+	<br />
+	<button type="submit" class="btn btn-primary btn-sm d-block mx-auto">Create</button>
+
+	</div>
+
+
+	} *@
+
+
+
+
+
+
+
+
+
+
+
+
+@* @if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success" role="alert">
+        @successMessage
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+ *@
+
+
+
+
+
+
+
+@*    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="First name" aria-label="First name">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+                        </div>
+                    </div>
+ *@
+
+
+
+
+
+
+@*  <label class="form-label m-2">Select the user</label>
+                    <select class="form-select" aria-label="Default select example">
+                        @foreach (var item in list)
+                        {
+                            <option value="1">@item.Name @item.Surname @item.Id</option>
+                        }
+                    </select> *@
+
+
+
+@*   <div class="TimeOfPreriod">
+                    <label class="form-label m-2">Time:</label>
+                    <select class="form-select" aria-label="Default select example">
+                        <option value="1">This month</option>
+                        <option value="2">This week</option>
+                        <option value="3">This year</option>
+                        <option value="4">Last month</option>
+                        <option value="5">Last week</option>
+                        <option value="6">Last year</option>
+                        <option value="7">All the time</option>
+                    </select>
+                    </div> *@
+
+
+
+
+
+
+
+
+
+
+@*  <li>
+                    <h3>Okres czasu</h3>
+                    <table class="table-info">
+                        <thead>
+                            <tr>
+                                <th scope="col">Project</th>
+                                <th scope="col">Total Time</th>
+                                <th scope="col">Total Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in list)
+                            {
+                                <tr>
+                                    <td>Project A</td>
+                                    <td>20 hours</td>
+                                    <td>$500</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </li> *@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

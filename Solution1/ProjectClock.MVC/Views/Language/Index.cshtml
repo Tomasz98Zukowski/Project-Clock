@@ -1,0 +1,16 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model ProjectClock.MVC.Models.LanguageSettingsViewModel
+
+@inject IViewLocalizer Localizer
+
+<h2>@Localizer["SettingsTitle"]</h2>
+
+<form asp-action="SetLanguage" method="post">
+    <div class="mb-3">
+        <label for="language" class="form-label">@Localizer["SelectLanguage"]</label>
+        <select id="language" name="culture" asp-for="SelectedLanguage" asp-items="@(new SelectList(Model.AvailableLanguages))" class="form-select"></select>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+    </div>
+</form>

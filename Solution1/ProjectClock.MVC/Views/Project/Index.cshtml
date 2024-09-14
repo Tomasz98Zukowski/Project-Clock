@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using ProjectClock.BusinessLogic.Dtos.Project.Dtos
+@using ProjectClock.BusinessLogic.Dtos.Project.ProjectDtos
+@using ProjectClock.MVC.Services.Components
+
+@inject IViewLocalizer Localizer
+
+
+@model IEnumerable<ProjectWithAccessLevelDto>
+
+<div class="container p-2 m-1 box-shadow border-bottom">
+    <div class="row">@await Component.InvokeAsync(nameof(CreateProject))</div>
+    <div class="row">
+        @foreach (var org in Model.GroupBy(p => p.Organization))
+        {
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input id="@org.Key" class="organization-checkbox form-check-input" type="checkbox" value="@org.Key" checked>
+                    <label class="form-check-label" for="@org.Key">@org.Key</label>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in @Model)
+        {
+            <div class="col-md-4 mb-4 project" data-organization="@item.Organization">
+                <div class="card h-100 d-flex">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">@Localizer["Organization"] @item.Organization</p>
+                        @if (item.CanEdit)
+                        {
+                            <form asp-action="Delete" asp-route-id="@item.Id" method="post">
+                                <button type="submit" class="btn btn-sm btn-primary col-12">@Localizer["Delete"]</button>
+                                <input type="hidden" name="_method" value="POST" />
+                            </form>
+                            <button class="btn btn-sm btn-primary mt-2 col-12"
+                                    onclick="location.href='@Url.Action("Update", "Project", new { id = item.Id })'">
+                                @Localizer["Modify"]
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script src="~/js/projectsManagement.js" asp-append-version="true"></script>
+
+

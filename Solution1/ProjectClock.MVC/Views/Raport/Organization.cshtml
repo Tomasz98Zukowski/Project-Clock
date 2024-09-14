@@ -1,0 +1,150 @@
+﻿@{
+    Layout = "~/Views/Shared/Components/Raport/_LayoutRaport.cshtml";
+
+    var labels = new List<string>() { "Placeholder1Project", "Placeholder2Project", "Placeholder3Project", "Placeholder4Project" };
+    var data = new List<int>() { 20, 25, 10, 4 };
+    var list = new List<string>() { "Placeholder1", "Placeholder2", "Placeholder3", "Placeholder4" };
+
+}
+<br />
+<br />
+
+<h1 class="title">Raport for organization</h1>
+
+<br />
+
+
+<div class="container">
+    
+            
+
+
+                    <label class="form-label m-2">Generate Report for:</label>
+                    <select class="form-select" aria-label="Default select example">
+                        @foreach (var item in list)
+                        {
+                            <option value="1">@item</option>
+                        }
+                    </select>
+
+
+
+
+                    <label class="form-label m-2">Time:</label>
+                    <select class="form-select" aria-label="Default select example">
+                        <option value="1">This month</option>
+                        <option value="2">This week</option>
+                        <option value="3">This year</option>
+                        <option value="4">Last month</option>
+                        <option value="5">Last week</option>
+                        <option value="6">Last year</option>
+                        <option value="7">All the time</option>
+                    </select>
+
+
+
+
+                    <button class="btn btn-success mt-2">Generate</button>
+                </li>
+                <li>
+                    <h3>Okres czasu</h3>
+                    <table class="table-info">
+                        <thead>
+                            <tr>
+                                <th scope="col">Project</th>
+                                <th scope="col">Total Time</th>
+                                <th scope="col">Total Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in list)
+                            {
+                                <tr>
+                                    <td>Project A</td>
+                                    <td>20 hours</td>
+                                    <td>$500</td>
+                                </tr>
+                            }
+                        </tbody>
+                  
+            
+
+        </div>
+        <div class="col-7">
+            <canvas id="myPieChart" width="400" height="400"></canvas>
+
+     
+
+</div>
+
+
+
+
+
+<style>
+    .container {
+        background-color: dimgray;
+        opacity: 1;
+        border-radius: 20px;
+        /*  background: #73AD21;
+            padding: 20px;
+            width: 200px;
+            height: 150px; */
+    }
+
+    h1 {
+        /* text-decoration: underline; */
+
+        text-align: center;
+        opacity: 0.5;
+    }
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('myPieChart').getContext('2d');
+    var myBarChart = new Chart(ctx, {
+        type: 'bar',  // Change to 'bar' for a bar chart
+        data: {
+            labels: @Html.Raw(Json.Serialize(labels)),
+            datasets: [{
+                data: @Html.Raw(Json.Serialize(data)),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(255, 241, 86, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 241, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        }
+
+    });
+</script>
+
+
+

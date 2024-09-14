@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using ProjectClock.BusinessLogic.Dtos.Organization
+
+@model IEnumerable<OrganizationDto>
+
+@inject IViewLocalizer Localizer
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <form action="/Project/Create" method="post">
+            <div class="form-group mt-1">
+                <label for="OrganizationName" class="control-label">@Localizer["Organization"]</label>
+                <select name="OrganizationName" class="form-select form-select-lg">
+                    @foreach (var organization in @Model)
+                    {
+                        <option value="@organization.OrganizationName">@organization.OrganizationName</option>
+                    }
+                </select>
+                <label for="ProjectName" class="control-label mt-1">@Localizer["Name"]</label>
+                <input name="ProjectName" class="form-control form-control-lg" type="text">
+            </div>
+            <div class="form-group mt-1">
+                <input value="@Localizer["Create"]" type="submit" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using ProjectClock.BusinessLogic.Dtos.AccountDtos
+
+@model DeleteAccountDto
+
+
+@inject IViewLocalizer Localizer
+
+<h1 class="text-center p-2">@Localizer["AccDelete"]</h1>
+
+<br>
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        @if (Model is not null && Model.DeleteAccountFailed)
+        {
+            <p class="text-warning text-bg-warning p-1">@Localizer["PassInvalid"]</p>
+        }
+        <form id="delete" method="post">
+            <div class="form-floating my-2">
+                <input type="password" asp-for="@Model.Password" class="form-control" autocomplete="email" aria-required="true" />
+                <label asp-for="@Model.Password" class="form-label">@Localizer["Password"]</label>
+                <span asp-validation-for="@Model.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <input onclick="showModal()" value="@Localizer["Delete"]" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <h4 class="text-danger m-2">@Localizer["AccDeleteConf"]</h4>
+        <div class="container">
+            <div class="row">
+                <button class="col btn btn-primary m-2" onclick="submitForm()">@Localizer["Delete"]</button>
+                <button class="col btn btn-info m-2" onclick="hideModal()">@Localizer["Cancel"]</button>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div id="overlay"></div>
+
+
+<script>
+    function showModal() {
+        document.getElementById('myModal').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+    function hideModal() {
+        document.getElementById('myModal').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+    function submitForm() {
+        document.getElementById('delete').submit();
+    }
+</script>
+

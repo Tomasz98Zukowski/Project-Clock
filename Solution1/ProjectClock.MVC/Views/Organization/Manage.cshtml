@@ -1,0 +1,214 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model ProjectClock.BusinessLogic.Dtos.OrganizationDto.ManageOrganizationDto
+@{
+    var noUsersMessage = TempData["NoUsersMessage"] as string;
+    var userAlreadySignedMessage = TempData["UserAlreadySignedMessage"] as string;
+    var userAddedMessage = TempData["UserAddedMessage"] as string;
+    var userAddFailedMessage = TempData["UserAddedFailedMessage"] as string;
+    var noOrganizationChoosed = TempData["NoOrganizationChoosed"] as string;
+    var userRemoveFailedMessage = TempData["UserToRemoveIsAnOwnerOrManager"] as string;
+    var userRemoveSuccessMessage = TempData["UserRemovedSuccessfully"] as string;
+    var userAdvanceToManagerFailedMessage = TempData["UserToAdvanceIsManagerOrOwner"] as string;
+    var userAdvanceToManagerSucceededMessage = TempData["UserAdvancedSuccessfully"] as string;
+    var userDegradeFromManagerFailedMessage = TempData["UserDegradeFromManagerFailedMessage"] as string;
+    var userDegradeFromManagerSucceededMessage = TempData["UserDegregadedSuccessfullyMessage"] as string;
+    var loggedInUserIsNotUserMessage = TempData["LoggedInUserIsNotAnOwner"] as string;
+}
+
+@inject IViewLocalizer Localizer
+
+<style>
+    .transparent-border {
+        border: 2px solid rgba(0, 74, 122, 0.2);
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    .form-section {
+        margin-bottom: 20px;
+    }
+
+        .form-section label {
+            font-weight: bold;
+        }
+
+    .btn-custom {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .alert {
+        margin-top: 20px;
+    }
+
+    .white-title-color {
+        color: white; /* Biały kolor */
+    }
+</style>
+
+@{
+    if (Model.OrganizationNames is null)
+    {
+        <h1 class="fw-bold mb-4 text-center white-title-color">@Localizer["ManageOrg"]</h1>
+    }
+    else
+    {
+        <h1 class="fw-bold mb-4 text-center white-title-color">@Localizer["ManageOrg"] @Model.OrganizationName</h1>
+    }
+}
+
+<div class="container-lg">
+    <div class="row">
+        <div class="col-md-4 transparent-border mx-auto form-section">
+            <form asp-controller="Organization" asp-action="Choose" method="post">
+                <label for="selectedOrganization">@Localizer["ChooseOrg"]</label>
+                <select class="form-select form-select-sm" aria-label="Small select example" id="selectedOrganization" name="organizationId">
+                    @{
+                        foreach (var chooseOrganizationDto in Model.ChooseOrganizations)
+                        {
+                            <option value="@chooseOrganizationDto.OrganizationId">@chooseOrganizationDto.OrganizationName</option>
+                        }
+                    }
+                </select>
+                <button type="submit" class="btn btn-primary btn-sm btn-custom">@Localizer["ChooseBtn"]</button>
+            </form>
+        </div>
+    </div>
+
+    @{
+        if (Model.OrganizationUserNames.Count != 0)
+        {
+            <div class="row">
+                <div class="col-md-4 transparent-border mx-auto form-section">
+                    <form asp-controller="Organization" asp-action="InviteUser" method="post">
+                        <label for="inviteEmail">@Localizer["InviteOrg"]</label>
+                        <input type="hidden" name="organizationId" value="@Model.SelectedOrganizationId" />
+                        <input type="email" class="form-control form-control-sm" id="inviteEmail" placeholder="@Localizer["EnterEmailHere"]" aria-label=".form-control-sm example" name="email">
+                        <button type="submit" class="btn btn-outline-secondary btn-sm btn-custom">@Localizer["InviteBtn"]</button>
+                    </form>
+                </div>
+
+                <div class="col-md-4 transparent-border mx-auto form-section">
+                    <form asp-controller="Organization" asp-action="RemoveUserFromOrganization" method="post">
+                        <label for="userToRemove">@Localizer["ChooseUserToRemove"]</label>
+                        <input type="hidden" name="organizationId" value="@Model.SelectedOrganizationId" />
+                        <select class="form-select form-select-sm" aria-label="Small select example" id="userToRemove" name="userToRemoveId">
+                            @{
+                                foreach (var chooseUserDto in Model.ChooseUserDto)
+                                {
+                                    <option value="@chooseUserDto.Id">@chooseUserDto.Name</option>
+                                }
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-outline-secondary btn-sm btn-custom">@Localizer["RemoveBtn"]</button>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 transparent-border mx-auto form-section">
+                    <form asp-controller="Organization" asp-action="AssignManagerStatus" method="post">
+                        <label for="userToBecomeManager">@Localizer["ChooseUserToAdvance"]</label>
+                        <input type="hidden" name="organizationId" value="@Model.SelectedOrganizationId" />
+                        <select class="form-select form-select-sm" aria-label="Small select example" id="userToBecomeManager" name="userToBecomeManagerId">
+                            @{
+                                foreach (var chooseUserDto in Model.ChooseUserDto)
+                                {
+                                    <option value="@chooseUserDto.Id">@chooseUserDto.Name</option>
+                                }
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-outline-secondary btn-sm btn-custom">@Localizer["AdvanceBtn"]</button>
+                    </form>
+                </div>
+                <div class="col-md-4 transparent-border mx-auto form-section">
+                    <form asp-controller="Organization" asp-action="DegregadeFromManagerStatus" method="post">
+                        <label for="userToDegrade">@Localizer["ChooseUserToDegrade"]</label>
+                        <input type="hidden" name="organizationId" value="@Model.SelectedOrganizationId" />
+                        <select class="form-select form-select-sm" aria-label="Small select example" id="userToDegrade" name="userToDegradeId">
+                            @{
+                                foreach (var chooseUserDto in Model.ChooseUserDto)
+                                {
+                                    <option value="@chooseUserDto.Id">@chooseUserDto.Name</option>
+                                }
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-outline-secondary btn-sm btn-custom">@Localizer["DegradeBtn"]</button>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@if (!string.IsNullOrEmpty(noUsersMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @noUsersMessage
+    </div>
+}
+@if (!string.IsNullOrEmpty(userAlreadySignedMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @userAlreadySignedMessage
+    </div>
+}
+@if (!string.IsNullOrEmpty(userAddedMessage))
+{
+    <div class="alert alert-success" role="alert">
+        @userAddedMessage
+    </div>
+}
+@if (!string.IsNullOrEmpty(userAddFailedMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @userAddFailedMessage
+    </div>
+}
+@if (!string.IsNullOrEmpty(noOrganizationChoosed))
+{
+    <div class="alert alert-danger" role="alert">
+        @noOrganizationChoosed
+    </div>
+}
+@if (!string.IsNullOrEmpty(userRemoveFailedMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @userRemoveFailedMessage
+    </div>
+}
+@if (!string.IsNullOrEmpty(userRemoveSuccessMessage))
+{
+    <div class="alert alert-success" role="alert">
+        @userRemoveSuccessMessage
+    </div>
+}
+@if (!string.IsNullOrEmpty(userAdvanceToManagerFailedMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @userAdvanceToManagerFailedMessage
+    </div>
+}
+@if (!string.IsNullOrEmpty(userAdvanceToManagerSucceededMessage))
+{
+    <div class="alert alert-success" role="alert">
+        @userAdvanceToManagerSucceededMessage
+    </div>
+}
+@if (!string.IsNullOrEmpty(userDegradeFromManagerFailedMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @userDegradeFromManagerFailedMessage
+    </div>
+}
+@if (!string.IsNullOrEmpty(userDegradeFromManagerSucceededMessage))
+{
+    <div class="alert alert-success" role="alert">
+        @userDegradeFromManagerSucceededMessage
+    </div>
+}
+@if (!string.IsNullOrEmpty(loggedInUserIsNotUserMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @loggedInUserIsNotUserMessage
+    </div>
+}

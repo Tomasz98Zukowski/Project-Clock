@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model ProjectClock.BusinessLogic.Dtos.Organization.InvitationToOrganizationDto
+@{
+    var successMessage = TempData["AcceptanceSuccessMessage"] as string;
+    var errorMessage = TempData["AcceptanceErrorMessage"] as string;
+}
+
+@inject IViewLocalizer Localizer
+
+<style>
+    .transparent-border {
+        border: 2px solid rgba(0, 74, 122, 0.05);
+        padding: 10px;
+    }
+
+    .column-spacing {
+        margin-right: 4px;
+    }
+</style>
+
+<h1 class="fw-bold mb-4 text-center">@Localizer["Invitations"]</h1>
+
+<div class="container-lg">
+
+    <div class="row">
+        
+        @{
+            if (Model.InvitingOrganizations.Count != 0)
+            {
+                <div class="col-md-3 transparent-border mx-auto d-flex justify-content-center align-items-center">
+                    <form asp-controller="Organization" asp-action="Invitation" method="post">
+                        <div class="mb-2">
+                            <label for="selectedOrganization">@Localizer["ChooseOrgToAccept"]</label>
+
+                            @{
+                        
+                        
+                                <select class="form-select form-select-sm" aria-label="Small select example" id="selectedOrganization" name="organizationId">
+                                    @{
+                                        foreach (var organization in Model.InvitingOrganizations)
+                                        {
+                                            <option value="@organization.OrganizationId">@organization.OrganizationName</option>
+                                        }
+                                    }
+                                </select>
+                        
+
+                            }
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm d-block mx-auto">@Localizer["AcceptBtn"]</button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <p>@Localizer["NoInvitations"]</p>
+            }
+        }
+    </div>
+
+
+</div>
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success" role="alert">
+        @successMessage
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}

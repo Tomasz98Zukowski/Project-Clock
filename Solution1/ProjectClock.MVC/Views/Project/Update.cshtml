@@ -1,0 +1,14 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using ProjectClock.BusinessLogic.Dtos.Project.ProjectDtos
+
+@model ProjectDto
+
+@inject IViewLocalizer Localizer
+
+<form id="Update" method="post">
+    <div class="mb-3">
+        <label for="selectedDateTime" class="form-label">@Localizer["InsertName"]</label>
+        <input type="text" asp-for="@Model.Name" class="form-control" required />       
+    </div>
+    <button type="submit" class="btn btn-primary">@Localizer["Change"]</button>
+</form>

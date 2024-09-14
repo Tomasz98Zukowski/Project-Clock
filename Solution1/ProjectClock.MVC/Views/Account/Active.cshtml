@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using ProjectClock.BusinessLogic.Dtos.Account.Dtos
+
+@model ActiveAccountDto
+@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    ViewData["Title"] = Localizer["ActiveInfo"];
+    var errorMessage = TempData["ErrorMessage"] as string;
+}
+
+@inject IViewLocalizer Localizer
+
+<div class="container-fluid form-body m-0 py-5">
+    <div class="container border-primary rounded-4 pt-2 text-white bg-opacity-50 text-bg-info col-lg-4">
+        <h1 class="text-center pt-5">@ViewData["Title"]</h1>
+        <div class="row justify-content-center text-center">
+            <div class="col-auto my-4">
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <p class="text-danger text-bg-danger p-1">
+                        @errorMessage
+                    </p>
+                }
+                <section>                   
+                    <form id="account" method="post">
+                        <div class="form-floating my-2 text-start" hidden>
+                            <input asp-for="@Model.Email" class="form-control" aria-required="true" />
+                            <label asp-for="@Model.Email" class="form-label"></label>
+                            <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating my-2 text-start">
+                            <input type="text" asp-for="@Model.Code" class="form-control" aria-required="true" />
+                            <label asp-for="@Model.Code" class="form-label">@Localizer["Code"]</label>
+                            <span asp-validation-for="@Model.Code" class="text-danger"></span>
+                        </div>                       
+                        <div class="btn-group col-12" role="group">
+                            <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-outline-primary rounded-5 mx-3 ">@Localizer["Active"]</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

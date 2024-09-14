@@ -1,0 +1,131 @@
+﻿@using ProjectClock.BusinessLogic.Dtos.WorkingTime.WorkingTimeDtos
+@model IEnumerable<WorkingTimeDto>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <form id="dateForm" class="row align-content-center">
+                <div class="col-1">
+                    <label for="startDate" class="col-form-label">From:</label>
+                </div>
+                <div class="col-5">
+                    <input type="date" id="startDate" name="startDate" class="form-control">
+                </div>
+                <div class="col-1">
+                    <label for="endDate" class="col-form-label">To:</label>
+                </div>
+                <div class="col-5">
+                    <input type="date" id="endDate" name="endDate" class="form-control">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@foreach (var group in Model.OrderBy(w => w.StartTime.Date).GroupBy(w => w.StartTime.Date))
+{
+    <div class="container bg-black bg-opacity-50 rounded-2 p-2 m-1 box-shadow d-none date-item" id="@group.Key.ToShortDateString()">
+        <div class="row">
+            <h4 class="">Date: @group.Key.ToShortDateString()</h4>
+            <div class="container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="row font-weight-bold border border-bottom mb-2">
+                                <div class="col ">Project Name</div>
+                                <div class="col d-none d-md-block ">Is Finished</div>
+                                <div class="col d-none d-md-block ">Start Time</div>
+                                <div class="col d-none d-md-block ">End Time</div>
+                                <div class="col">Time</div>
+                                <div class="col">Action</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @foreach (var item in group)
+                    {
+                        <div class="row mb-2 border-top b-3 p-1">
+                            <div class="col fw-bold">@item.ProjectName</div>
+                            <div class="col d-none d-md-block">
+                                @if (item.IsFinished)
+                                {
+                                    <p>Ended</p>
+                                }
+                                else
+                                {
+                                    <p class="text-primary">In progress</p>
+                                }
+                            </div>
+                            <div class="col d-none d-md-block">@item.StartTime.ToString("yyyy-MM-dd HH:mm:ss")</div>
+                            <div class="col d-none d-md-block">
+                                @if (item.IsFinished)
+                                {
+                                    <p>@item.EndTime.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                                }
+                                else
+                                {
+                                    <p>-</p>
+                                }
+                            </div>
+                            @{
+                                var totalTime = item.EndTime - item.StartTime;
+                            }
+                            <div class="col">
+                                @if (item.IsFinished)
+                                {
+                                    if (totalTime < new TimeSpan(1, 0, 0, 0))
+                                    {
+                                        <p>@totalTime.ToString(@"hh\:mm\:ss")</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-danger">@totalTime.ToString(@"dd\:hh\:mm\:ss")</p>
+                                    }
+                                }
+                                else
+                                {
+                                    <p>-</p>
+                                }
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-4 col-sm-12">
+                                        <a asp-action="Update"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-danger btn-sm text-center">Modify</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4 col-sm-12 pt-1">
+                                        <form asp-action="Delete" asp-route-id="@item.Id" method="post">
+                                            <button type="submit" class="btn btn-danger btn-sm text-center">Delete</button>
+                                            <input type="hidden" name="_method" value="POST" />
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-12 d-none d-md-block bg-light bg-opacity-25 rounded-1">
+                                <span class="fw-bold border-bottom border-1">Description:</span>
+
+                                @if (item.Description == null)
+                                {
+                                    <p class="text-body">-</p>
+                                }
+                                else
+                                {
+                                    <p>@item.Description</p>
+                                }
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<script src="~/js/workingTimeManagement.js" asp-append-version="true"></script>
